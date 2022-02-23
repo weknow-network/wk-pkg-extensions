@@ -1,4 +1,4 @@
-import { IKeyValue, IKeyValueDefault } from "@weknow-network/wk-pkg-primitives";
+import { IKeyValue, IKeyValueDefault } from "@weknow.network/wk-pkg-primitives";
 import { IRecordConvert } from "./IRecordConvert";
 
 /**

@@ -5,7 +5,7 @@
 /* eslint-disable no-extend-native */
 /* eslint-disable @typescript-eslint/naming-convention */
 
-import { guardFn, IKeyValue } from "@weknow-network/wk-pkg-primitives";
+import { guardFn, IKeyValue } from "@weknow.network/wk-pkg-primitives";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
