@@ -1,0 +1,42 @@
+{
+  "name": "@weknow.packages/wk-pkg-extensions",
+  "publishConfig": {
+    "access": "public"
+  },
+  "version": "1.0.0",
+  "license": "MIT",
+  "private": false,
+  "author": "WeKnow",
+  "description": "String, array and object prototype extensions and methods.",
+  "homepage": "https://github.com/weknow-network/wk-pkg-extensions",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/weknow-network/wk-pkg-extensions"
+  },
+  "bugs": {
+    "url": "https://github.com/weknow-network/wk-pkg-extensions/issues"
+  },
+  "engines": {
+    "yarn": ">=1.22.0"
+  },
+  "scripts": {
+    "build": "rollup -c",
+    "test": "jest"
+  },
+  "dependencies": {
+    "@weknow.network/wk-pkg-primitives": "^1.0.3"
+  },
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^21.0.1",
+    "@rollup/plugin-node-resolve": "^13.1.3",
+    "@rollup/plugin-typescript": "^8.3.0",
+    "rollup": "^2.67.3",
+    "tslib": "^2.3.1",
+    "ts-jest": "^27.1.3"
+  },
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "files": [
+    "dist"
+  ]
+}
