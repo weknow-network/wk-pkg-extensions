@@ -1,5 +1,5 @@
 {
-  "name": "@weknow.packages/wk-pkg-extensions",
+  "name": "@weknow.network/wk-pkg-extensions",
   "publishConfig": {
     "access": "public"
   },
