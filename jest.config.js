@@ -2,5 +2,5 @@
 module.exports = {
   preset: "ts-jest",
   testEnvironment: "node",
-  testPathIgnorePatterns: ["node_modules", ".rollup.cache"],
+  testPathIgnorePatterns: ["node_modules", "dist", ".rollup.cache"],
 };
