@@ -4,13 +4,10 @@
 name: Node.js Package
 
 on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]        
-  release:
-    types: [created]
-
+  workflow_run:
+    workflows: ["prepare"]
+    types:
+      - completed
     
   workflow_dispatch:
     inputs:
@@ -18,15 +15,8 @@ on:
         description: 'Log level'     
         required: false
         default: 'warning'  
-jobs:
-  version_increment:
-    name: Version Increment
-    uses: weknow-network/weknow-workflows/.github/workflows/js-increment-version.yml@release/2022-01-09
-    with:
-      path: ./package.json
-    
+jobs:    
   ci:
-    needs: version_increment
     name: CI/CD
     runs-on: ubuntu-latest
     strategy:

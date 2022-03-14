@@ -1,0 +1,27 @@
+# This workflow will run tests using node and then publish a package to GitHub Packages when a release is created
+# For more information see: https://help.github.com/actions/language-and-framework-guides/publishing-nodejs-packages
+
+name: Prepare (Version Increment)
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]        
+  release:
+    types: [created]
+
+    
+  workflow_dispatch:
+    inputs:
+      logLevel:
+        description: 'Log level'     
+        required: false
+        default: 'warning'  
+jobs:
+  version_increment:
+    name: Version Increment
+    uses: weknow-network/weknow-workflows/.github/workflows/js-increment-version.yml@release/2022-01-09
+    with:
+      path: ./package.json
+ 
