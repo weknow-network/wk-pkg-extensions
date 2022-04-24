@@ -1,4 +1,4 @@
-## Description
+# Description
 
 String, array and object prototype extensions and methods.
 
