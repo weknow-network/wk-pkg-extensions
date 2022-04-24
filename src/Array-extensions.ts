@@ -105,6 +105,30 @@ declare global {
     ): Map<TKey, TValue>;
 
     /**
+     * convert array to Map<TKey, T[]>
+     * @param keySelector determine the key, can be either key of T or selector function
+     * @param valueSelector determine the value, can be either key of T or selector function
+     *
+     * @example [{id: 1, val:'A1'}, {id: 1, val:'A2'}, {id: 2, val:'B'}].groupBy('id', 'val') = map { 1: ['A1', 'A2'], 2: ['B'] }
+     */
+    groupBy<TKey, TValue = T>(
+      keySelector: keyof T | ((item: T) => TKey),
+      valueSelector?: keyof T | ((item: T) => TValue)
+    ): Map<TKey, TValue[]>;
+
+    /**
+     * convert array to {TKey, T[]}[]
+     * @param keySelector determine the key, can be either key of T or selector function
+     * @param valueSelector determine the value, can be either key of T or selector function
+     *
+     * @example [{id: 1, val:'A1'}, {id: 1, val:'A2'}, {id: 2, val:'B'}].groupByToArray('id', 'val') = [{ key:1: value:['A1', 'A2']}, {key:2: value:['B'] }]
+     */
+    groupByToArray<TKey, TValue = T>(
+      keySelector: keyof T | ((item: T) => TKey),
+      valueSelector?: keyof T | ((item: T) => TValue)
+    ): IKeyValue<TKey, TValue[]>[];
+
+    /**
      * convert array of records to key value array
      * @param keySelector determine the key, can be either key of T or selector function
      * @param valueSelector determine the value, can be either key of T or selector function
@@ -262,12 +286,12 @@ export const extendArrayPrototype = () => {
         ? keySelector
         : (item: any) => item[keySelector];
 
-      const groupedMap = this.reduce((entryMap, e) => {
+      const groupedMap = this.reduce<Map<TKey, TValue>>((entryMap, e) => {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const k = convertKey(e);
         const newValue = convertValue(e);
         return entryMap.set(k, newValue);
-      }, new Map());
+      }, new Map<TKey, TValue>());
       return groupedMap;
     };
   }
@@ -278,6 +302,46 @@ export const extendArrayPrototype = () => {
       valueSelector?: any | ((item: any) => TValue)
     ): IKeyValue<TKey, TValue>[] {
       const map = this.toMap<TKey, TValue>(
+        keySelector as string | number | symbol | ((item: any) => TKey),
+        valueSelector
+      );
+      const res = Array.from(map, ([key, value]) => ({ key, value }));
+      return res;
+    };
+  }
+ 
+  // credit: https://stackoverflow.com/a/47752730/2335067
+  if (!Array.prototype.groupBy) {
+    Array.prototype.groupBy = function <TKey, TValue = unknown>(
+      keySelector: any | ((item: any) => TKey),
+      valueSelector?: any | ((item: any) => TValue)
+    ): Map<TKey, TValue[]> {
+      const convertValue = guardFn<(item: any) => TValue>(valueSelector)
+        ? valueSelector
+        : (item: any) => item[valueSelector];
+      const convertKey = guardFn<(item: any) => TKey>(keySelector)
+        ? keySelector
+        : (item: any) => item[keySelector];
+
+      const groupedMap = this.reduce<Map<TKey, TValue[]>>((entryMap, e) => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const k = convertKey(e);
+        const newValue = convertValue(e);
+        const existsValues = entryMap.get(k);
+        const values = existsValues ? [...existsValues, newValue] : [newValue];
+
+        return entryMap.set(k, values);
+      }, new Map<TKey, TValue[]>());
+      return groupedMap;
+    };
+  }
+
+  if (!Array.prototype.groupByToArray) {
+    Array.prototype.groupByToArray = function <TKey, TValue = unknown>(
+      keySelector: unknown | ((item: any) => TKey),
+      valueSelector?: any | ((item: any) => TValue)
+    ): IKeyValue<TKey, TValue[]>[] {
+      const map = this.groupBy<TKey, TValue>(
         keySelector as string | number | symbol | ((item: any) => TKey),
         valueSelector
       );

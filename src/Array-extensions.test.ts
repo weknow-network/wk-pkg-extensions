@@ -90,9 +90,6 @@ test("toMap", () => {
   const r1 = unionedArray.get(1);
   const r2 = unionedArray.get(2);
 
-  console.log('r1', r1);
-  console.log('r2', r2);
-
   expect(r1).toMatch( 'A2');
   expect(r2).toMatch('B');
 });
@@ -107,9 +104,6 @@ test("toMap_using function", () => {
   const r1 = unionedArray.get(1);
   const r2 = unionedArray.get(2);
 
-  console.log('r1', r1);
-  console.log('r2', r2);
-
   expect(r1).toMatch( 'A2');
   expect(r2).toMatch('B');
 });
@@ -121,11 +115,53 @@ test("toKeyValueArray", () => {
     { id: 2, val: "B" },
   ].toKeyValueArray("id", "val");
 
-  console.log('unionedArray', JSON.stringify(unionedArray));
 
   expect(unionedArray[0]).toMatchObject({ key: 1, value: "A" });
   expect(unionedArray[1]).toMatchObject({ key: 2, value: "B" });
 });
+
+test("groupBy", () => {
+  const unionedArray = [
+    { id: 1, val: "A1" },
+    { id: 1, val: "A2" },
+    { id: 2, val: "B" },
+  ].groupBy("id", "val");
+
+  const r1 = unionedArray.get(1);
+  const r2 = unionedArray.get(2);
+
+  expect(r1).toMatchObject( ['A1','A2']);
+  expect(r2).toMatchObject(['B']);
+});
+
+test("groupBy_using function", () => {
+  const unionedArray = [
+    { id: 1, val: "A1" },
+    { id: 1, val: "A2" },
+    { id: 2, val: "B" },
+  ].groupBy(m => m.id, m => m.val);
+
+  const r1 = unionedArray.get(1);
+  const r2 = unionedArray.get(2);
+
+  expect(r1).toMatchObject( ['A1','A2']);
+  expect(r2).toMatchObject(['B']);
+});
+
+
+test("toKeyValueArray", () => {
+  const unionedArray = [
+    { id: 1, val: "A1" },
+    { id: 1, val: "A2" },
+    { id: 2, val: "B" },
+  ].groupByToArray("id", "val");
+
+
+  expect(unionedArray[0]).toMatchObject({ key: 1, value: ["A1", 'A2'] });
+  expect(unionedArray[1]).toMatchObject({ key: 2, value: ["B"] });
+});
+
+//------------
 
 test("union", () => {
   const unionedArray = [1, 2, 3].union([2, 3, 4, 5]);
