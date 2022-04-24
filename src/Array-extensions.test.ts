@@ -80,32 +80,51 @@ test("toMap", () => {
   expect(unionedArray).toMatchObject(expectedResult);
 });
 
-test("toMap-dynamic", () => {
+test("toMap", () => {
   const unionedArray = [
-    { id: 1, val: "A" },
+    { id: 1, val: "A1" },
+    { id: 1, val: "A2" },
     { id: 2, val: "B" },
-  ].toMap(
-    (m) => m.id,
-    (m) => m.val
-  );
-  const expectedResult = new Map<number, string>();
-  expectedResult.set(1, "A");
-  expectedResult.set(2, "B");
+  ].toMap("id", "val");
 
-  expect(unionedArray).toMatchObject(expectedResult);
+  const r1 = unionedArray.get(1);
+  const r2 = unionedArray.get(2);
+
+  console.log('r1', r1);
+  console.log('r2', r2);
+
+  expect(r1).toMatch( 'A2');
+  expect(r2).toMatch('B');
 });
 
-test("flatGroup", () => {
+test("toMap_using function", () => {
+  const unionedArray = [
+    { id: 1, val: "A1" },
+    { id: 1, val: "A2" },
+    { id: 2, val: "B" },
+  ].toMap(m => m.id, m => m.val);
+
+  const r1 = unionedArray.get(1);
+  const r2 = unionedArray.get(2);
+
+  console.log('r1', r1);
+  console.log('r2', r2);
+
+  expect(r1).toMatch( 'A2');
+  expect(r2).toMatch('B');
+});
+
+
+test("toKeyValueArray", () => {
   const unionedArray = [
     { id: 1, val: "A" },
     { id: 2, val: "B" },
-  ].flatGroup("id", "val");
-  const expectedResult = [
-    { key: 1, value: "A" },
-    { key: 2, value: "B" },
-  ];
+  ].toKeyValueArray("id", "val");
 
-  expect(unionedArray).toMatchObject(expectedResult);
+  console.log('unionedArray', JSON.stringify(unionedArray));
+
+  expect(unionedArray[0]).toMatchObject({ key: 1, value: "A" });
+  expect(unionedArray[1]).toMatchObject({ key: 2, value: "B" });
 });
 
 test("union", () => {

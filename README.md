@@ -13,3 +13,8 @@ String, array and object prototype extensions and methods.
 ## Contribute
 
 Contributions are welcome!
+
+
+## Breaking changes
+
+flatGroup renamed to toKeyValueArray

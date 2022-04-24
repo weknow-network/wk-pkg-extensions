@@ -93,7 +93,7 @@ declare global {
     all(predicate: (item: T) => boolean): boolean;
 
     /**
-     * convert array to Map<TKey, T[]>
+     * convert array to Map<TKey, T>
      * @param keySelector determine the key, can be either key of T or selector function
      * @param valueSelector determine the value, can be either key of T or selector function
      *
@@ -102,19 +102,19 @@ declare global {
     toMap<TKey, TValue = T>(
       keySelector: keyof T | ((item: T) => TKey),
       valueSelector?: keyof T | ((item: T) => TValue)
-    ): Map<TKey, TValue[]>;
+    ): Map<TKey, TValue>;
 
     /**
      * convert array of records to key value array
      * @param keySelector determine the key, can be either key of T or selector function
      * @param valueSelector determine the value, can be either key of T or selector function
      *
-     * @example [{ id: 1, val: "A" }, { id: 2, val: "B" }].flatGroup("id", "val") = [{ key: 1, value: "A" }, { key: 2, value: "B" }]
+     * @example [{ id: 1, val: "A" }, { id: 2, val: "B" }].toKeyValueArray("id", "val") = [{ key: 1, value: "A" }, { key: 2, value: "B" }]
      */
-    flatGroup<TKey, TValue = T>(
+    toKeyValueArray<TKey, TValue = T>(
       keySelector: keyof T | ((item: T) => TKey),
       valueSelector?: keyof T | ((item: T) => TValue)
-    ): IKeyValue<TKey, TValue[]>[];
+    ): IKeyValue<TKey, TValue>[];
   }
 }
 
@@ -254,7 +254,7 @@ export const extendArrayPrototype = () => {
     Array.prototype.toMap = function <TKey, TValue = unknown>(
       keySelector: any | ((item: any) => TKey),
       valueSelector?: any | ((item: any) => TValue)
-    ): Map<TKey, TValue[]> {
+    ): Map<TKey, TValue> {
       const convertValue = guardFn<(item: any) => TValue>(valueSelector)
         ? valueSelector
         : (item: any) => item[valueSelector];
@@ -272,11 +272,11 @@ export const extendArrayPrototype = () => {
     };
   }
 
-  if (!Array.prototype.flatGroup) {
-    Array.prototype.flatGroup = function <TKey, TValue = unknown>(
+  if (!Array.prototype.toKeyValueArray) {
+    Array.prototype.toKeyValueArray = function <TKey, TValue = unknown>(
       keySelector: unknown | ((item: any) => TKey),
       valueSelector?: any | ((item: any) => TValue)
-    ): IKeyValue<TKey, TValue[]>[] {
+    ): IKeyValue<TKey, TValue>[] {
       const map = this.toMap<TKey, TValue>(
         keySelector as string | number | symbol | ((item: any) => TKey),
         valueSelector
