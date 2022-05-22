@@ -279,12 +279,14 @@ export const extendArrayPrototype = () => {
       keySelector: any | ((item: any) => TKey),
       valueSelector?: any | ((item: any) => TValue)
     ): Map<TKey, TValue> {
+      const convertKey = guardFn<(item: any) => TKey>(keySelector)
+      ? keySelector
+      : (item: any) => item[keySelector];
       const convertValue = guardFn<(item: any) => TValue>(valueSelector)
         ? valueSelector
-        : (item: any) => item[valueSelector];
-      const convertKey = guardFn<(item: any) => TKey>(keySelector)
-        ? keySelector
-        : (item: any) => item[keySelector];
+        : valueSelector 
+        ? (item: any) => item[valueSelector]
+        : (item: any) => item;
 
       const groupedMap = this.reduce<Map<TKey, TValue>>((entryMap, e) => {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any

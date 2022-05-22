@@ -80,7 +80,7 @@ test("toMap", () => {
   expect(unionedArray).toMatchObject(expectedResult);
 });
 
-test("toMap", () => {
+test("toMap (override)", () => {
   const unionedArray = [
     { id: 1, val: "A1" },
     { id: 1, val: "A2" },
@@ -106,6 +106,21 @@ test("toMap_using function", () => {
 
   expect(r1).toMatch( 'A2');
   expect(r2).toMatch('B');
+});
+
+test("toMap_using (no value map)", () => {
+  const arr =  [
+    { id: 1, val: "A1" },
+    { id: 1, val: "A2" },
+    { id: 2, val: "B" },
+  ];
+  const unionedArray = arr.toMap('id');
+
+  const r1 = unionedArray.get(1);
+  const r2 = unionedArray.get(2);
+
+  expect(r1).toMatchObject(arr[1]);
+  expect(r2).toMatchObject(arr[2]);
 });
 
 
