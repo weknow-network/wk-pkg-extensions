@@ -185,6 +185,16 @@ test("union", () => {
   expect(unionedArray).toMatchObject(expectedResult);
 });
 
+test("unionBy", () => {
+  const unionedArray = [{key:1, val:11},{key:2, val:22},{key:3, val:33}]
+                             .unionBy(
+                               'key',
+                               [{key:3, val:333},{key:4, val:444}]);
+  const expectedResult = [{key:1, val:11},{key:2, val:22},{key:3, val:333},{key:4, val:444}];
+
+  expect(unionedArray).toMatchObject(expectedResult);
+});
+
 test("intersect", () => {
   const unionedArray = [1, 2, 3].intersect([2, 3, 4, 5]);
   const expectedResult = [2, 3];
@@ -196,6 +206,17 @@ test("except", () => {
   const unionedArray = [1, 2, 3, 4].except([3, 4, 5]);
   const expectedResult = [1, 2];
 
+  expect(unionedArray).toMatchObject(expectedResult);
+});
+
+test("exceptBy", () => {
+  const unionedArray = [{key:1, val:11},{key:2, val:22},{key:3}].exceptBy('key', {key:3});
+  const expectedResult = [{key:1, val:11},{key:2, val:22}];
+
+  console.log('##### unionedArray  ####');
+  console.log(unionedArray);
+  console.log('##### expectedResult  ####');
+  console.log(expectedResult);
   expect(unionedArray).toMatchObject(expectedResult);
 });
 

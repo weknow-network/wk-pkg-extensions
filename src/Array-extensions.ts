@@ -53,6 +53,13 @@ declare global {
     union(array: T[] | T | undefined): T[];
 
     /**
+     * combine 2 array without duplication while override the source 
+     * array with entry of the append array when the 'by' key match 
+     * @example (by key): [{key:1, val:11},{key:2, val:22},{key:3, val:33}].unionBy('key',[{key:3, val:333},{key:4, val:444}]) = [{key:1, val:11},{key:2, val:22},{key:3, val:333},{key:4, val:444}]
+     */
+    unionBy(by: keyof T, array: T[] | T | undefined): T[];
+
+    /**
      * The intersection will give us the elements that both arrays share in
      * commonThe intersection will give us the elements that both arrays share in common.
      * @example [1,2,3].intersect([2,3,4,5]) = [2,3]
@@ -64,6 +71,12 @@ declare global {
      * @example [1,2,3,4].except([3,4,5]) = [1,2]
      */
     except(array: T[] | T): T[];
+
+    /**
+     * returns elements of the array which not exists in the argument array (compared by the 'by' parameter).
+     * @example [{key:1, val:11},{key:2, val:22},{key:3}].exceptBy('key', {key:3}) = [{key:1, val:11},{key:2, val:22}]
+     */
+    exceptBy(by: keyof T, array: T[] | T): T[];
 
     /**
      * returns the first mapping of an element which don't return undefined.
@@ -201,6 +214,17 @@ export const extendArrayPrototype = () => {
     };
   }
 
+
+  if (!Array.prototype.unionBy) {
+    Array.prototype.unionBy = function <T>(by: keyof T, value: T[] | T | undefined): T[] {
+      if (value === undefined) return this as T[];
+      const array = Array.isArray(value) ? value : [value];
+      const except = this.exceptBy(by, array);
+      const res = [...except, ...array];
+      return res;
+    };
+  }
+
   if (!Array.prototype.intersect) {
     Array.prototype.intersect = function <T>(value: T[] | T): T[] {
       const array = Array.isArray(value) ? value : [value];
@@ -213,6 +237,15 @@ export const extendArrayPrototype = () => {
     Array.prototype.except = function <T>(value: T[] | T): T[] {
       const array = Array.isArray(value) ? value : [value];
       const res = this.filter((m) => !array.includes(m));
+      return res;
+    };
+  }
+
+  if (!Array.prototype.exceptBy) {
+    Array.prototype.exceptBy = function <T>(by: keyof T, value: T[] | T): T[] {
+      const array = Array.isArray(value) ? value : [value];
+      const set = new Set(array.map(m =>  m[by]));
+      const res = this.filter((m) => !set.has(m[by]));
       return res;
     };
   }
