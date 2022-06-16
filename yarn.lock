@@ -668,10 +668,10 @@
   dependencies:
     "@types/yargs-parser" "*"
 
-"@weknow.network/wk-pkg-primitives@^1.0.19":
-  version "1.0.19"
-  resolved "https://registry.yarnpkg.com/@weknow.network/wk-pkg-primitives/-/wk-pkg-primitives-1.0.19.tgz#d26bb293664f62054edcf95b8852c5aeec4622cb"
-  integrity sha512-p9TOYJfAvokx4+nmR5egah6k++d0d0/vkZqpPFbxH2RNQuXAV1ED4VKtM0inNlIIYJBPNp8WoA4wCCUvDgRVfA==
+"@weknow.network/wk-pkg-primitives@^1.0.20":
+  version "1.0.20"
+  resolved "https://registry.yarnpkg.com/@weknow.network/wk-pkg-primitives/-/wk-pkg-primitives-1.0.20.tgz#6155e61704d77a24b87c78947985d0fa947e2baf"
+  integrity sha512-ZyXTjqgvu2Hn14+PagkHOVldPpZiGKtgd/x0hjDmsL4xUufcSij3S1k67FAhIcTOnDvG1gKqP1VpDxk+jfAorg==
   dependencies:
     date-fns "^2.27.1"
     date-fns-tz "^1.1.8"
