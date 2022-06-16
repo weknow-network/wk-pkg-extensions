@@ -24,7 +24,7 @@
     "test": "jest"
   },
   "dependencies": {
-    "@weknow.network/wk-pkg-primitives": "^1.0.17"
+    "@weknow.network/wk-pkg-primitives": "^1.0.18"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^21.0.1",
